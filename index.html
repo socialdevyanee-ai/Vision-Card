@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Devyanee · Vision Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#07120e; --green:#0d3328; --haar:#d7dcd4; --brass:#c8a24a; --signal:#ee5a2b;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --serif:'Fraunces',Georgia,serif; --mono:'DM Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--deep);color:var(--haar);font-family:var(--serif);overflow:hidden}
+#glow{position:fixed;left:0;top:0;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,162,74,.22),transparent 65%);pointer-events:none;z-index:1;
+  transform:translate3d(50vw,30vh,0);mix-blend-mode:screen}
+#rail{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#rail::-webkit-scrollbar{display:none}
+.frame{position:relative;height:100vh;height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 28px) 26px calc(env(safe-area-inset-bottom,0px) + 28px);
+  overflow:hidden;isolation:isolate}
+.frame:nth-child(even){background:linear-gradient(170deg,var(--green),var(--deep) 70%)}
+.frame:nth-child(odd){background:radial-gradient(120% 80% at 80% 0%,#12402f,var(--deep) 62%)}
+.wrap{position:relative;z-index:2;max-width:640px;width:100%;margin:0 auto}
+.mono{font-family:var(--mono);font-weight:300;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--brass)}
+.label{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.label i{display:block;height:1px;width:34px;background:var(--brass);transform-origin:left;transform:scaleX(0);transition:transform 1.1s var(--ease) .1s}
+.in .label i{transform:scaleX(1)}
+.rv{opacity:0;transform:translate3d(0,26px,0);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:calc(var(--d,0) * 1ms)}
+.in .rv{opacity:1;transform:none}
+.sig{position:absolute;right:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:3}
+.cue{position:absolute;left:26px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:3;animation:bob 2.6s var(--ease) infinite}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(7px);opacity:1}}
+
+/* hero */
+#dial{position:absolute;z-index:0;left:50%;top:50%;width:min(135vw,900px);aspect-ratio:1;margin:calc(min(135vw,900px) / -2) 0 0 calc(min(135vw,900px) / -2);opacity:.9}
+#dial .ring{transform-origin:300px 300px;animation:spin 140s linear infinite}
+#dial .ring2{transform-origin:300px 300px;animation:spin 90s linear infinite reverse}
+#dial .hand{transform-origin:300px 300px;animation:spin 60s linear infinite}
+#dial .tick{stroke:var(--haar);opacity:0;animation:tk .6s var(--ease) forwards}
+@keyframes tk{to{opacity:.55}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.name{font-weight:900;font-size:clamp(58px,21vw,170px);line-height:.82;letter-spacing:-.055em;font-variation-settings:'opsz' 144;overflow:hidden;padding-bottom:.06em}
+.name span{display:inline-block;transform:translateY(105%);animation:up 1.3s var(--ease) forwards;animation-delay:calc(.5s + var(--i) * 70ms)}
+@keyframes up{to{transform:none}}
+.name-sub{font-weight:200;font-style:italic;font-size:clamp(18px,5vw,30px);letter-spacing:-.01em;margin-top:18px;color:var(--haar);opacity:0;animation:fade 1.4s var(--ease) 1.9s forwards}
+@keyframes fade{to{opacity:.85}}
+.eyebrow{opacity:0;animation:fade 1.2s var(--ease) .2s forwards;margin-bottom:26px}
+
+/* statements */
+.big{font-weight:300;font-size:clamp(25px,7.4vw,46px);line-height:1.14;letter-spacing:-.025em;text-wrap:balance}
+.big b{font-weight:900;font-style:italic;color:var(--brass)}
+.big u{text-decoration:none;background:linear-gradient(var(--signal),var(--signal)) 0 62%/0 3px no-repeat;transition:background-size 1.2s var(--ease) .9s}
+.in .big u{background-size:100% 3px}
+.w{display:inline-block;opacity:0;transform:translateY(.4em);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--i) * 45ms + 250ms)}
+.in .w{opacity:1;transform:none}
+
+/* glass */
+.glass{background:rgba(215,220,212,.07);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(215,220,212,.16);border-radius:22px;padding:22px 22px 24px;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.glass.b{margin-left:6vw;margin-top:-6px;transform:rotate(1.2deg)}
+.in .glass.b.rv{transform:rotate(1.2deg)}
+.glass.a{margin-right:6vw;transform:rotate(-1deg)}
+.in .glass.a.rv{transform:rotate(-1deg)}
+.glass p{font-weight:300;font-size:clamp(20px,5.6vw,30px);line-height:1.2;letter-spacing:-.02em}
+.glass p b{font-weight:800}
+.stack{display:flex;flex-direction:column;gap:20px}
+.mq{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 18px);z-index:1;white-space:nowrap;overflow:hidden;opacity:.14}
+.mq div{display:inline-block;font-weight:900;font-size:clamp(54px,16vw,120px);letter-spacing:-.04em;animation:mq 38s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* numbers */
+.num{display:block;width:100%;text-align:left;background:none;color:inherit;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  border:1px solid rgba(215,220,212,.2);border-radius:24px;padding:22px 24px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(215,220,212,.09),rgba(215,220,212,.02));transition:border-color .6s var(--ease)}
+.num + .num{margin-top:16px;margin-left:8vw;width:calc(100% - 8vw)}
+.num:hover,.num.open{border-color:var(--brass)}
+.num .v{display:block;font-weight:900;letter-spacing:-.05em;line-height:.95;margin:12px 0 10px;transition:transform .5s var(--ease);will-change:transform}
+.num.f .v{font-size:clamp(44px,14.5vw,92px);color:var(--signal)}
+.num.e .v{font-size:clamp(34px,10.5vw,64px);font-weight:200;color:var(--haar)}
+.num .cap{display:block;font-weight:300;font-style:italic;font-size:clamp(15px,4.2vw,20px);line-height:1.25;max-width:30ch}
+.num .why{display:block;max-height:0;opacity:0;overflow:hidden;font-family:var(--mono);font-weight:300;font-size:12px;line-height:1.6;color:var(--brass);transition:max-height .8s var(--ease),opacity .8s var(--ease),margin .8s var(--ease)}
+.num.open .why{max-height:90px;opacity:1;margin-top:12px}
+.hint{margin-top:16px;opacity:.55}
+
+/* domino + levers */
+.dom{display:flex;gap:7px;margin-bottom:22px;align-items:flex-end;height:46px}
+.dom i{display:block;width:14px;height:42px;background:var(--brass);border-radius:2px;transform-origin:bottom left;opacity:.9}
+.in .dom i{animation:fall 1.4s var(--ease) forwards;animation-delay:calc(.5s + var(--i) * 140ms)}
+.dom i:first-child{background:var(--signal)}
+@keyframes fall{to{transform:rotate(18deg);opacity:.35}}
+.dom i:first-child{animation-name:fall1 !important}
+@keyframes fall1{to{transform:rotate(72deg)}}
+.lev{list-style:none;margin-top:30px;counter-reset:l}
+.lev li{counter-increment:l;display:flex;gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(215,220,212,.18);
+  font-weight:600;font-size:clamp(19px,5.4vw,28px);letter-spacing:-.02em;transition:transform .5s var(--ease),color .5s}
+.lev li::before{content:"0" counter(l);font-family:var(--mono);font-weight:300;font-size:11px;letter-spacing:.2em;color:var(--brass)}
+.lev li:hover{transform:translateX(8px);color:var(--brass)}
+
+/* mantra */
+.mantra{text-align:center;font-weight:900;font-size:clamp(46px,14.5vw,128px);line-height:.9;letter-spacing:-.05em;text-wrap:balance}
+.mantra .ln{display:block;overflow:hidden;padding-bottom:.08em}
+.mantra .c{display:inline-block;transform:translateY(110%) rotate(6deg);transition:transform 1.1s var(--ease);transition-delay:calc(var(--i) * 38ms + 200ms)}
+.in .mantra .c{transform:none}
+.mantra .ln:nth-child(2) .c{font-weight:200;font-style:italic}
+.mantra:hover .c{font-weight:200}
+.mantra .c{transition-property:transform,font-weight}
+.foot{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center;opacity:.28;font-size:9px;z-index:3}
+.dots{position:fixed;right:10px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:9px}
+.dots i{display:block;width:4px;height:4px;border-radius:50%;background:var(--haar);opacity:.25;transition:opacity .5s,transform .5s var(--ease)}
+.dots i.on{opacity:1;transform:scale(1.8);background:var(--brass)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+@media (min-width:900px){.frame{padding-left:8vw;padding-right:8vw}}
+</style>
+</head>
+<body>
+<div id="glow"></div>
+<div class="dots" id="dots"></div>
+<main id="rail">
+
+<!-- 1 HERO -->
+<section class="frame in" data-f>
+  <svg id="dial" viewBox="0 0 600 600" aria-hidden="true">
+    <circle cx="300" cy="300" r="290" fill="none" stroke="#c8a24a" stroke-opacity=".35"/>
+    <circle cx="300" cy="300" r="205" fill="none" stroke="#d7dcd4" stroke-opacity=".12"/>
+    <g id="ticks"></g>
+    <defs><path id="circ" d="M300,300 m-248,0 a248,248 0 1,1 496,0 a248,248 0 1,1 -496,0"/></defs>
+    <g class="ring"><text font-family="DM Mono" font-size="12" letter-spacing="7" fill="#c8a24a" fill-opacity=".8"><textPath href="#circ">FULL AUTONOMY · EDINBURGH · LONG WALKS · WATCHES · MOTORSPORT · SUNLIT ROOMS · CHOOSE MY PEOPLE ·</textPath></text></g>
+    <g class="ring2"><circle cx="300" cy="95" r="5" fill="#ee5a2b"/></g>
+    <g class="hand"><line x1="300" y1="300" x2="300" y2="62" stroke="#ee5a2b" stroke-width="1.5"/><circle cx="300" cy="300" r="5" fill="#ee5a2b"/></g>
+  </svg>
+  <div class="wrap">
+    <div class="mono eyebrow">Vision Card &nbsp;/&nbsp; 23 Oct ’26</div>
+    <h1 class="name" id="name" aria-label="Devyanee"></h1>
+    <div class="name-sub">full autonomy over my life.</div>
+  </div>
+  <div class="mono cue">swipe up</div>
+</section>
+
+<!-- 2 REFUSE -->
+<section class="frame" data-f>
+  <div class="wrap">
+    <div class="label rv" style="--d:0"><i></i><span class="mono">What I refuse</span></div>
+    <p class="big" data-words>Waiting to be perfect or approved by family keeps me <u>trapped</u>, losing my <b>peak 20s</b> in an empty rat race.</p>
+  </div>
+  <div class="mono sig rv" style="--d:900">02</div>
+</section>
+
+<!-- 3 BUILDING -->
+<section class="frame" data-f>
+  <div class="wrap">
+    <div class="label rv"><i></i><span class="mono">What I am building</span></div>
+    <p class="big" data-words>I earn passively through <b>watch</b> and <b>motorsports</b> businesses, working anywhere from a cozy, sunlit space, traveling freely to <b>Edinburgh</b>, with full control over my lean, fit body.</p>
+  </div>
+  <div class="mono sig rv" style="--d:900">03</div>
+</section>
+
+<!-- 4 WHO + PEOPLE -->
+<section class="frame" data-f>
+  <div class="mq" aria-hidden="true"><div>decides every choice &nbsp;·&nbsp; acts with conviction &nbsp;·&nbsp; long walks &nbsp;·&nbsp; reading &nbsp;·&nbsp; decides every choice &nbsp;·&nbsp; acts with conviction &nbsp;·&nbsp; long walks &nbsp;·&nbsp; reading &nbsp;·&nbsp;</div></div>
+  <div class="wrap stack">
+    <div class="glass a rv" style="--d:0">
+      <div class="mono" style="margin-bottom:14px">Who I am</div>
+      <p>I am the type of person who <b>decides every choice for herself</b>, acts with conviction, and starts each morning with long walks and reading.</p>
+    </div>
+    <div class="glass b rv" style="--d:250">
+      <div class="mono" style="margin-bottom:14px">The people I am becoming with</div>
+      <p>I will <b>choose who I work with</b>. Also many more fun and spontaneous friendships.</p>
+    </div>
+  </div>
+  <div class="mono sig rv" style="--d:900">04</div>
+</section>
+
+<!-- 5 NUMBERS -->
+<section class="frame" data-f>
+  <div class="wrap">
+    <button class="num f rv" style="--d:0" data-mag>
+      <span class="mono">Freedom Number</span>
+      <span class="v">₹4,91,837</span>
+      <span class="cap">The number where I stop negotiating my time.</span>
+      <span class="why">Tap again to close. At this number the rat race is optional, not a trap.</span>
+    </button>
+    <button class="num e rv" style="--d:200" data-mag>
+      <span class="mono">Exit Floor</span>
+      <span class="v">₹1,20,000</span>
+      <span class="cap">The least I need to walk away and not look back.</span>
+      <span class="why">Tap again to close. Below this I wait. At this I can leave.</span>
+    </button>
+    <div class="mono hint rv" style="--d:450">tap a number</div>
+  </div>
+  <div class="mono sig rv" style="--d:900">05</div>
+</section>
+
+<!-- 6 DOMINO + LEVERS -->
+<section class="frame" data-f>
+  <div class="wrap">
+    <div class="dom" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i></div>
+    <div class="label rv"><i></i><span class="mono">First domino, tomorrow</span></div>
+    <p class="big rv" style="--d:150;font-size:clamp(22px,6.2vw,36px)">Leave at your scheduled finish time and take <b>30 uninterrupted minutes</b> with no work, screens or chores, just a walk or leisure reading.</p>
+    <ul class="lev">
+      <li class="rv" style="--d:350">Walk before the day takes over</li>
+      <li class="rv" style="--d:480">Read for fun, no goal attached</li>
+      <li class="rv" style="--d:610">Leave on time, every single day</li>
+    </ul>
+  </div>
+  <div class="mono sig rv" style="--d:900">06</div>
+</section>
+
+<!-- 7 MANTRA -->
+<section class="frame" data-f>
+  <div class="wrap">
+    <h2 class="mantra" id="mantra" aria-label="Full autonomy over my life."></h2>
+  </div>
+  <div class="mono foot">MAO Cohort 1 · Volume II · The Foundation · Deployed 23 Oct 2026</div>
+</section>
+
+</main>
+<script>
+(function(){
+  var rail=document.getElementById('rail'),frames=[].slice.call(document.querySelectorAll('[data-f]'));
+  // dial ticks
+  var g=document.getElementById('ticks'),NS='http://www.w3.org/2000/svg';
+  for(var i=0;i<120;i++){
+    var a=i*3*Math.PI/180,long=i%10===0,r1=long?262:272,r2=282;
+    var l=document.createElementNS(NS,'line');
+    l.setAttribute('x1',300+Math.sin(a)*r1);l.setAttribute('y1',300-Math.cos(a)*r1);
+    l.setAttribute('x2',300+Math.sin(a)*r2);l.setAttribute('y2',300-Math.cos(a)*r2);
+    l.setAttribute('class','tick');l.setAttribute('stroke-width',long?2:1);
+    l.style.animationDelay=(i*14)+'ms';g.appendChild(l);
+  }
+  // name letters
+  var n=document.getElementById('name');
+  'Devyanee'.split('').forEach(function(c,i){var s=document.createElement('span');s.textContent=c;s.style.setProperty('--i',i);n.appendChild(s)});
+  // word reveals
+  document.querySelectorAll('[data-words]').forEach(function(p){
+    var k=0;
+    (function walk(node){
+      [].slice.call(node.childNodes).forEach(function(ch){
+        if(ch.nodeType===3){
+          var f=document.createDocumentFragment();
+          ch.textContent.split(/(\s+)/).forEach(function(t){
+            if(!t)return;
+            if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return}
+            var s=document.createElement('span');s.className='w';s.style.setProperty('--i',k++);s.textContent=t;f.appendChild(s);
+          });
+          node.replaceChild(f,ch);
+        }else if(ch.nodeType===1){walk(ch)}
+      });
+    })(p);
+  });
+  // mantra letters
+  var m=document.getElementById('mantra'),k=0;
+  ['Full autonomy','over my life.'].forEach(function(line){
+    var d=document.createElement('span');d.className='ln';
+    line.split('').forEach(function(c){
+      var s=document.createElement('span');s.className='c';s.style.setProperty('--i',k++);
+      s.innerHTML=c===' '?'&nbsp;':c;d.appendChild(s);
+    });
+    m.appendChild(d);
+  });
+  // dots
+  var dots=document.getElementById('dots');
+  frames.forEach(function(){dots.appendChild(document.createElement('i'))});
+  var di=dots.children;
+  // observer
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        var idx=frames.indexOf(e.target);
+        for(var j=0;j<di.length;j++)di[j].classList.toggle('on',j===idx);
+      }
+    });
+  },{root:rail,threshold:.55});
+  frames.forEach(function(f){io.observe(f)});
+  di[0].classList.add('on');
+  // glow follows pointer softly
+  var tx=innerWidth/2,ty=innerHeight/3,cx=tx,cy=ty,gl=document.getElementById('glow');
+  addEventListener('pointermove',function(e){tx=e.clientX;ty=e.clientY},{passive:true});
+  (function loop(){
+    cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;
+    gl.style.transform='translate3d('+cx+'px,'+cy+'px,0)';
+    requestAnimationFrame(loop);
+  })();
+  // dial parallax
+  var dial=document.getElementById('dial');
+  addEventListener('pointermove',function(e){
+    var x=(e.clientX/innerWidth-.5)*24,y=(e.clientY/innerHeight-.5)*24;
+    dial.style.transform='translate3d('+x+'px,'+y+'px,0)';
+  },{passive:true});
+  rail.addEventListener('scroll',function(){
+    dial.style.opacity=Math.max(.15,.9-rail.scrollTop/innerHeight*.9);
+  },{passive:true});
+  // magnetic numbers + tap to reveal
+  document.querySelectorAll('[data-mag]').forEach(function(b){
+    var v=b.querySelector('.v');
+    b.addEventListener('pointermove',function(e){
+      var r=b.getBoundingClientRect();
+      v.style.transform='translate3d('+((e.clientX-r.left-r.width/2)*.06)+'px,'+((e.clientY-r.top-r.height/2)*.1)+'px,0)';
+    });
+    b.addEventListener('pointerleave',function(){v.style.transform=''});
+    b.addEventListener('click',function(){b.classList.toggle('open')});
+  });
+})();
+</script>
+</body>
+</html>
